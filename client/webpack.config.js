@@ -17,7 +17,7 @@ module.exports = () => { // this fuction is called by webpack to get the config 
     },
     plugins: [ 
       new HtmlWebpackPlugin({ // plugin to generate html file
-        template: './client/index.html', // template file
+        template: './index.html', // template file
         filename: 'index.html', // output file
         chunks: ['main'], // chunk to include
       }),
@@ -29,7 +29,7 @@ module.exports = () => { // this fuction is called by webpack to get the config 
         crossorigin: 'use-credentials', // serves cross-origin requests with credentials
         icons: [
           { // icons for different sizes
-            src: path.resolve('client/src/images/logo.png'),
+            src: path.resolve('./src/images/logo.png'),
             sizes: [96, 128, 192, 256, 384, 512],
           },
         ],

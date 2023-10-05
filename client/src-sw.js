@@ -26,5 +26,36 @@ warmStrategyCache({
 
 registerRoute(({ request }) => request.mode === 'navigate', pageCache);
 
-// TODO: Implement asset caching
-registerRoute();
+// this is the fallback page that will be shown when there is no internet connection
+const staticAssetCache = new CacheFirst({ 
+  cacheName: 'static-assets',
+  plugins: [
+    new CacheableResponsePlugin({
+      statuses: [0, 200],
+    }),
+    new ExpirationPlugin({
+      maxAgeSeconds: 30 * 24 * 60 * 60,
+    }),
+  ]
+});
+
+// Cache JS files
+registerRoute(
+  /.*\.js$/,
+  staticAssetCache
+);
+// Cache CSS files
+registerRoute(
+  /.*\.css$/,
+  staticAssetCache
+);
+// Cache images
+registerRoute(
+  /.*\.(?:png|jpg|jpeg|svg|gif|ico)$/,
+  staticAssetCache
+);
+// Cache fonts
+registerRoute(
+  /.*\.(?:woff|woff2|ttf|otf|eot)$/,
+  staticAssetCache
+);

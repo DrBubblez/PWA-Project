@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
 const path = require('path');
 const { InjectManifest } = require('workbox-webpack-plugin');
+const fileLoader = require('file-loader');
 
 module.exports = () => { // this fuction is called by webpack to get the config object
   return {
@@ -14,6 +15,7 @@ module.exports = () => { // this fuction is called by webpack to get the config 
     output: { // output bundle file
       filename: '[name].bundle.js', 
       path: path.resolve(__dirname, 'dist'),
+      publicPath: '/',
     },
     plugins: [ 
       new HtmlWebpackPlugin({ // plugin to generate html file
@@ -53,7 +55,20 @@ module.exports = () => { // this fuction is called by webpack to get the config 
             loader: 'babel-loader',
             options: { presets: ['@babel/preset-env'] },
           }
-        }
+        },
+        { // rule to load images
+          test: /\.(png|svg|jpg|jpeg|gif)$/i,
+          use: [
+            {
+                loader: 'file-loader',
+                options: {
+                    name: '[path][name].[ext]',
+                    outputPath: 'images/',
+                    publicPath: 'images/'
+                }
+            }
+          ]
+        },
       ],
     },
   };
